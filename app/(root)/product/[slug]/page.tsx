@@ -23,7 +23,7 @@ const ProductDetailsPage = async (props: {
           {/* Images Column */}
           <div className='col-span-2'>
             <ProductImages images={product.images!} />
-        </div>;
+        </div>
 
           {/* Details Column */}
          <div className='col-span-2 p-5'>
