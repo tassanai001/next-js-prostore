@@ -37,7 +37,6 @@ const SignUpForm = () => {
           <Input
             id='name'
             name='name'
-            required
             type='text'
             defaultValue={signUpDefaultValues.name}
             autoComplete='name'
@@ -48,7 +47,6 @@ const SignUpForm = () => {
           <Input
             id='email'
             name='email'
-            required
             type='email'
             defaultValue={signUpDefaultValues.email}
             autoComplete='email'
@@ -59,7 +57,6 @@ const SignUpForm = () => {
           <Input
             id='password'
             name='password'
-            required
             type='password'
             defaultValue={signUpDefaultValues.password}
             autoComplete='current-password'
@@ -70,7 +67,6 @@ const SignUpForm = () => {
           <Input
             id='confirmPassword'
             name='confirmPassword'
-            required
             type='password'
             defaultValue={signUpDefaultValues.confirmPassword}
             autoComplete='current-password'
