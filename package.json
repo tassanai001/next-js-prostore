@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "exec-prisma-seed": "npx tsx ./db/seed"
+    "exec-prisma-seed": "npx tsx ./db/seed",
+    "npx-prisma-studio": "npx prisma studio"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
