@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import ProductPrice from '@/components/shared/product/product-price';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { getProductBySlug } from '@/lib/actions/product.action';
 import { Badge } from '@/components/ui/badge';
 import ProductImages from '@/components/shared/product/product-images';
+import AddToCart from '@/components/shared/product/add-to-cart';
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -23,10 +23,10 @@ const ProductDetailsPage = async (props: {
           {/* Images Column */}
           <div className='col-span-2'>
             <ProductImages images={product.images!} />
-        </div>
+          </div>
 
           {/* Details Column */}
-         <div className='col-span-2 p-5'>
+          <div className='col-span-2 p-5'>
             <div className='flex flex-col gap-6'>
               <p>
                 {product.brand} {product.category}
@@ -36,11 +36,11 @@ const ProductDetailsPage = async (props: {
                 {product.rating} of {product.numReviews} reviews
               </p>
 
-               <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
-                  <ProductPrice
-                    value={Number(product.price)}
-                    className='w-24 rounded-full bg-green-100 text-green-700 px-5 py-2'
-                  />
+              <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
+                <ProductPrice
+                  value={Number(product.price)}
+                  className='w-24 rounded-full bg-green-100 text-green-700 px-5 py-2'
+                />
               </div>
             </div>
             <div className='mt-10'>
@@ -67,8 +67,17 @@ const ProductDetailsPage = async (props: {
                   )}
                 </div>
                 {product.stock > 0 && (
-                  <div className=' flex-center'>
-                    <Button className='w-full'>Add to cart</Button>
+                  <div className='flex-center'>
+                    <AddToCart
+                      item={{
+                        productId: product.id,
+                        name: product.name,
+                        slug: product.slug,
+                        price: product.price,
+                        qty: 1,
+                        image: product.images![0],
+                      }}
+                    />
                   </div>
                 )}
               </CardContent>
