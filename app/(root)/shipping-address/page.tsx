@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import ShippingAddressForm from './shipping-address-form';
 import { ShippingAddress } from '@/types';
+import CheckoutSteps from '@/components/shared/checkout-steps';
 
 export const metadata: Metadata = {
     title: 'Shipping Address',
@@ -16,7 +17,6 @@ const ShippingAddressPage = async () => {
     if (!cart || cart.items.length === 0) redirect('/cart');
 
     const session = await auth();
-
     const userId = session?.user?.id;
 
     if (!userId) {
@@ -24,11 +24,10 @@ const ShippingAddressPage = async () => {
     }
 
     const user = await getUserById(userId);
-    console.log(user);
-
 
     return (
         <>
+            <CheckoutSteps current={1} />
             <ShippingAddressForm address={user.address as ShippingAddress} />
         </>
     )

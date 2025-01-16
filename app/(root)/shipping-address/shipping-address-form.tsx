@@ -11,7 +11,7 @@ import { shippingAddressDefaultValues } from '@/lib/constants';
 import { useToast } from '@/hooks/use-toast';
 import { useTransition } from 'react';
 import { updateUserAddress } from '@/lib/actions/user.actions';
-import CheckoutSteps from '@/components/shared/checkout-steps';
+// import CheckoutSteps from '@/components/shared/checkout-steps';
 import {
   Form,
   FormControl,
@@ -38,10 +38,23 @@ const ShippingAddressForm = ({
         defaultValues: address || shippingAddressDefaultValues,
     });
 
-    const onSubmit = (values) => {
-      console.log(values);
-      return;
-    }
+    const onSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (
+      values
+    ) => {
+      startTransition(async () => {
+        const res = await updateUserAddress(values);
+
+        if (!res.success) {
+          toast({
+            variant: 'destructive',
+            description: res.message,
+          });
+          return;
+        }
+
+        router.push('/payment-method');
+      });
+    };
 
     return (
         <>
