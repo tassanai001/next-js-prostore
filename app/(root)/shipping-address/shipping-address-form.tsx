@@ -11,7 +11,6 @@ import { shippingAddressDefaultValues } from '@/lib/constants';
 import { useToast } from '@/hooks/use-toast';
 import { useTransition } from 'react';
 import { updateUserAddress } from '@/lib/actions/user.actions';
-// import CheckoutSteps from '@/components/shared/checkout-steps';
 import {
   Form,
   FormControl,
