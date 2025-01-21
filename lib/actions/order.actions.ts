@@ -1,13 +1,13 @@
 "use server";
 
-import { isRedirectError } from "next/dist/client/components/redirect";
 import { formatError } from "../utils";
 import { auth } from "@/auth";
 import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
-import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
 import { CartItem } from "@/types";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { insertOrderSchema } from "../validator";
 
 // Create Order
 export const createOrder = async () => {
