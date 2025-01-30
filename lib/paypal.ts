@@ -8,7 +8,7 @@ export const paypal = {
 };
 
 // Generate an access token for the PayPal API
-async function generateAccessToken() {
+export async function generateAccessToken() {
     const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
     const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_APP_SECRET}`).toString(
       'base64'
