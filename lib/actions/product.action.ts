@@ -11,7 +11,13 @@ export const getLatestProducts = async () => {
       createdAt: "desc",
     },
   });
-  return convertToPlainObject(products);
+  const payload = convertToPlainObject(products);
+  return payload.map((product) => {
+    return {
+      ...product,
+      price: Number(product.price),
+    }
+  })
 };
 
 // Get single product by slug
