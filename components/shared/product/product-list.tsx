@@ -6,7 +6,8 @@ const ProductList = ({
   title,
   limit,
 }: {
-  data: Product[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
   title?: string;
   limit?: number;
 }) => {
