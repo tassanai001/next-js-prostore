@@ -1,7 +1,6 @@
 import ProductCard from "./product-card";
 import { Product } from "@/types";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const ProductList = ({
   data,
   title,
