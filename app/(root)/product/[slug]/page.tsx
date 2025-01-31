@@ -14,7 +14,8 @@ const ProductDetailsPage = async (props: {
 
   const { slug } = params;
 
-  const product = await getProductBySlug(slug);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const product = await getProductBySlug(slug) as any;
   if (!product) notFound();
 
   const cart = await getMyCart(); //👈 Add this line
