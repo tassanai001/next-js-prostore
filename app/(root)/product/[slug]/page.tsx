@@ -35,7 +35,7 @@ const ProductDetailsPage = async (props: {
               </p>
               <h1 className='h3-bold'>{product.name}</h1>
               <p>
-                {product.rating} of {product.numReviews} reviews
+                {product.rating.toString()} of {product.numReviews} reviews
               </p>
 
               <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
@@ -76,7 +76,7 @@ const ProductDetailsPage = async (props: {
                         productId: product.id,
                         name: product.name,
                         slug: product.slug,
-                        price: product.price,
+                        price: product.price.toString(),
                         qty: 1,
                         image: product.images![0],
                       }}
