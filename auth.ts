@@ -118,7 +118,6 @@ export const config = {
 
         return token;
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       authorized({ request, auth }: any) {
         // Array of regex patterns for protected paths
         const protectedPaths = [
