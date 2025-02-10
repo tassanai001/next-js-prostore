@@ -12,6 +12,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import Link from 'next/link';
+import Charts from './charts';
 
 const AdminOverviewPage = async () => {
     const session = await auth();
@@ -74,7 +75,11 @@ const AdminOverviewPage = async () => {
                         <CardTitle>Overview</CardTitle>
                     </CardHeader>
                     <CardContent className='pl-2'>
-                        {/* CHART */}
+                        <Charts
+                            data={{
+                                salesData: summary.salesData,
+                            }}
+                        />
                     </CardContent>
                 </Card>
                 <Card className='col-span-3'>
