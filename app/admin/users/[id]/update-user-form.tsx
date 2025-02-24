@@ -25,8 +25,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { updateUser } from '@/lib/actions/user.actions';
 
-const updateUserForm = ({
+const UpdateUserForm = ({
     user,
 }: {
     user: z.infer<typeof updateUserSchema>;
@@ -39,8 +40,32 @@ const updateUserForm = ({
         defaultValues: user,
     });
 
+    // Handle submit
     const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {
-        console.log(values);
+        try {
+            const res = await updateUser({
+                ...values,
+                id: user.id,
+            });
+
+            if (!res.success)
+                return toast({
+                    variant: 'destructive',
+                    description: res.message,
+                });
+
+            toast({
+                description: res.message,
+            });
+
+            form.reset();
+            router.push(`/admin/users`);
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                description: (error as Error).message,
+            });
+        }
     };
 
     return (
@@ -139,4 +164,4 @@ const updateUserForm = ({
     );
 };
 
-export default updateUserForm;
+export default UpdateUserForm;
