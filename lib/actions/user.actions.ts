@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema, updateUserSchema } from '../validator';
-import { hashSync } from 'bcrypt-ts-edge';
+import { hashSync } from 'bcrypt-mini';
 import { prisma } from '@/db/prisma';
 import { auth, signIn, signOut } from "@/auth";
 import { formatError } from "../utils";

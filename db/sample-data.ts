@@ -1,4 +1,4 @@
-import { hashSync } from 'bcrypt-ts-edge';
+import { hashSync } from 'bcrypt-mini';
 
 const sampleData = {
   users: [
