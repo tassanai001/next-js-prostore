@@ -221,9 +221,9 @@ async function updateOrderToPaid({
     },
   });
 
-  if (!order) throw new Error('Order not found');
+  if (!order) throw new Error("Order not found");
 
-  if (order.isPaid) throw new Error('Order is already paid');
+  if (order.isPaid) throw new Error("Order is already paid");
 
   // Transaction to update the order and update the product quantities
   await prisma.$transaction(async (tx) => {
@@ -252,15 +252,15 @@ async function updateOrderToPaid({
       id: orderId,
     },
     include: {
-    orderItems: true,
+      orderItems: true,
       user: { select: { name: true, email: true } },
     },
   });
 
   if (!updatedOrder) {
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
-};
+}
 
 // Get User Orders
 export async function getMyOrders({
@@ -271,11 +271,11 @@ export async function getMyOrders({
   page: number;
 }) {
   const session = await auth();
-  if (!session) throw new Error('User is not authenticated');
+  if (!session) throw new Error("User is not authenticated");
 
   const data = await prisma.order.findMany({
     where: { userId: session.user!.id! },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,
   });
@@ -290,12 +290,11 @@ export async function getMyOrders({
   };
 }
 
-
 // Get sales data and order summary
 type SalesDataType = {
   month: string;
   totalSales: number;
-}[]
+}[];
 
 export async function getOrderSummary() {
   // Get counts for each resource
@@ -320,7 +319,7 @@ export async function getOrderSummary() {
 
   // Get latest sales
   const latestOrders = await prisma.order.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       user: { select: { name: true } },
     },
@@ -341,12 +340,29 @@ export async function getOrderSummary() {
 export async function getAllOrders({
   limit = PAGE_SIZE,
   page,
+  query,
 }: {
+  query: string;
   limit?: number;
   page: number;
 }) {
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== "all"
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            } as Prisma.StringFilter,
+          },
+        }
+      : {};
+
   const data = await prisma.order.findMany({
-    orderBy: { createdAt: 'desc' },
+    where: {
+      ...queryFilter,
+    },
+    orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,
     include: { user: { select: { name: true } } },
@@ -365,11 +381,11 @@ export async function deleteOrder(id: string) {
   try {
     await prisma.order.delete({ where: { id } });
 
-    revalidatePath('/admin/orders');
+    revalidatePath("/admin/orders");
 
     return {
       success: true,
-      message: 'Order deleted successfully',
+      message: "Order deleted successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -381,7 +397,7 @@ export async function updateOrderToPaidByCOD(orderId: string) {
   try {
     await updateOrderToPaid({ orderId });
     revalidatePath(`/order/${orderId}`);
-    return { success: true, message: 'Order paid successfully' };
+    return { success: true, message: "Order paid successfully" };
   } catch (err) {
     return { success: false, message: formatError(err) };
   }
@@ -396,8 +412,8 @@ export async function deliverOrder(orderId: string) {
       },
     });
 
-    if (!order) throw new Error('Order not found');
-    if (!order.isPaid) throw new Error('Order is not paid');
+    if (!order) throw new Error("Order not found");
+    if (!order.isPaid) throw new Error("Order is not paid");
 
     await prisma.order.update({
       where: { id: orderId },
@@ -409,7 +425,7 @@ export async function deliverOrder(orderId: string) {
 
     revalidatePath(`/order/${orderId}`);
 
-    return { success: true, message: 'Order delivered successfully' };
+    return { success: true, message: "Order delivered successfully" };
   } catch (err) {
     return { success: false, message: formatError(err) };
   }
