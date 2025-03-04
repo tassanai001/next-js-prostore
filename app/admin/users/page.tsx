@@ -21,23 +21,31 @@ export const metadata: Metadata = {
 };
 
 const AdminUserPage = async (props: {
-    searchParams: Promise<{
-        page: string;
-    }>;
+    searchParams: Promise<{ page: string; query: string }>;
 }) => {
     const searchParams = await props.searchParams;
 
-    const { page = '1' } = searchParams;
+    const { page = '1', query: searchText } = searchParams;
 
     const session = await auth();
     if (session?.user.role !== 'admin')
         throw new Error('admin permission required');
 
-    const users = await getAllUsers({ page: Number(page) });
+    const users = await getAllUsers({ page: Number(page), query: searchText });
 
     return (
         <div className='space-y-2'>
             <h1 className='h2-bold'>Users</h1>
+            {searchText && (
+                <div>
+                    Filtered by <i>&quot;{searchText}&quot;</i>{' '}
+                    <Link href={`/admin/users`}>
+                        <Button variant='outline' size='sm'>
+                            Remove Filter
+                        </Button>
+                    </Link>
+                </div>
+            )}
             <div>
                 <Table>
                     <TableHeader>
