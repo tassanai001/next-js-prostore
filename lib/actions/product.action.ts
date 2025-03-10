@@ -29,12 +29,19 @@ export async function getAllProducts({
   // query,
   limit = PAGE_SIZE,
   page,
-}: // category,
+  // category,
+  // price,
+  // rating,
+  // sort,
+}:
 {
   query: string;
+  category: string;
   limit?: number;
   page: number;
-  category: string;
+  price?: string;
+  rating?: string;
+  sort?: string;
 }) {
   const data = await prisma.product.findMany({
     orderBy: { createdAt: "desc" },

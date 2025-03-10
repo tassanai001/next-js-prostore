@@ -2,6 +2,7 @@ import { ProductCarousel } from '@/components/shared/product/product-carousel';
 import ProductList from '@/components/shared/product/product-list';
 import { getFeaturedProducts, getLatestProducts } from '@/lib/actions/product.action';
 import { LATEST_PRODUCTS_LIMIT } from "@/lib/constants";
+import ViewAllProductsButton from "@/components/view-all-products-button";
 
 export const metadata = {
   title: "Home",
@@ -26,6 +27,7 @@ const HomePage = async () => {
       {featuredProducts.length > 0 && <ProductCarousel data={featuredProducts} />}
 
       <ProductList title='Newest Arrivals' data={transformedProducts} limit={LATEST_PRODUCTS_LIMIT} />
+      <ViewAllProductsButton />
     </div>
   );
 }
