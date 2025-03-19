@@ -34,9 +34,8 @@ export async function getAllProducts({
   category,
   price,
   rating,
-  // sort,
-}:
-{
+  sort,
+}: {
   query: string;
   category: string;
   limit?: number;
@@ -45,43 +44,50 @@ export async function getAllProducts({
   rating?: string;
   sort?: string;
 }) {
-
   // Filter by query
   const queryFilter: Prisma.ProductWhereInput =
-  query && query !== 'all'
-    ? {
-        name: {
-          contains: query,
-          mode: 'insensitive',
-        } as Prisma.StringFilter,
-      }
-    : {};
+    query && query !== "all"
+      ? {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          } as Prisma.StringFilter,
+        }
+      : {};
 
   // Filter by category
-  const categoryFilter = category && category !== 'all' ? { category } : {};
+  const categoryFilter = category && category !== "all" ? { category } : {};
 
   // Filter by price
   const priceFilter: Prisma.ProductWhereInput =
-  price && price !== 'all'
-    ? {
-        price: {
-          gte: Number(price.split('-')[0]),
-          lte: Number(price.split('-')[1]),
-        },
-      }
-    : {};
+    price && price !== "all"
+      ? {
+          price: {
+            gte: Number(price.split("-")[0]),
+            lte: Number(price.split("-")[1]),
+          },
+        }
+      : {};
 
   // Filter by rating
-  const ratingFilter = rating && rating !== 'all' ? { rating: { gte: Number(rating) } } : {};
+  const ratingFilter =
+    rating && rating !== "all" ? { rating: { gte: Number(rating) } } : {};
 
   const data = await prisma.product.findMany({
-    orderBy: { createdAt: "desc" },
     where: {
       ...queryFilter,
       ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     },
+    orderBy:
+      sort === "lowest"
+        ? { price: "asc" }
+        : sort === "highest"
+        ? { price: "desc" }
+        : sort === "rating"
+        ? { rating: "desc" }
+        : { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -182,7 +188,7 @@ export async function getAllCategories() {
 export async function getFeaturedProducts() {
   const data = await prisma.product.findMany({
     where: { isFeatured: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     take: 4,
   });
 
