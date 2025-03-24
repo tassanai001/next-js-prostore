@@ -5,39 +5,36 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from '@/components/ui/dialog';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  createUpdateReview,
-  getReviewByProductId,
-} from '@/lib/actions/review.actions';
 import { reviewFormDefaultValues } from '@/lib/constants';
 import { insertReviewSchema } from '@/lib/validator';
 import { z } from 'zod';
 import { StarIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { createUpdateReview } from '@/lib/actions/review.actions';
 
 type CustomerReview = z.infer<typeof insertReviewSchema>;
 
@@ -60,8 +57,30 @@ const ReviewForm = ({
         defaultValues: reviewFormDefaultValues,
     });
 
+    // Open form handler
     const handleOpenForm = () => {
+        form.setValue('productId', productId);
+        form.setValue('userId', userId);
         setOpen(true);
+    };
+
+    // Form submit handler
+    const onSubmit: SubmitHandler<CustomerReview> = async (values) => {
+        const res = await createUpdateReview({ ...values, productId });
+
+        if (!res.success)
+            return toast({
+                variant: 'destructive',
+                description: res.message,
+            });
+
+        setOpen(false);
+
+        onReviewSubmitted?.();
+
+        toast({
+            description: res.message,
+        });
     };
 
     return (
@@ -71,7 +90,7 @@ const ReviewForm = ({
             </Button>
             <DialogContent className='sm:max-w-[425px]'>
                 <Form {...form}>
-                    <form method='post'>
+                    <form method='post' onSubmit={form.handleSubmit(onSubmit)}>
                         <DialogHeader>
                             <DialogTitle>Write a review</DialogTitle>
                             <DialogDescription>
