@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Calendar, User } from 'lucide-react';
 import { formatDateTime } from '@/lib/utils';
 import Rating from '@/components/shared/product/rating';
+import { useToast } from '@/hooks/use-toast';
 
 const ReviewList = ({
     productId,
@@ -21,6 +22,7 @@ const ReviewList = ({
 }) => {
 
     const [reviews, setReviews] = useState<Review[]>([]);
+    const { toast } = useToast();
 
     useEffect(() => {
         /// Load reviews from the database
@@ -33,7 +35,16 @@ const ReviewList = ({
 
     // Reload reviews when a review is submitted
     const reload = async () => {
-        console.log('review submitted');
+        try {
+            const res = await getReviews({ productId });
+            setReviews([...res.data]);
+        } catch (err) {
+            console.log(err);
+            toast({
+                variant: 'destructive',
+                description: 'Error in fetching reviews',
+            });
+        }
     };
 
     return (
