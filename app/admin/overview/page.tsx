@@ -13,8 +13,12 @@ import {
 } from '@/components/ui/table';
 import Link from 'next/link';
 import Charts from './charts';
+import { requireAdmin } from '@/lib/auth-guard';
 
 const AdminOverviewPage = async () => {
+
+    await requireAdmin();
+
     const session = await auth();
 
     // Make sure the user is an admin

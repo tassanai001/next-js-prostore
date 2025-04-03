@@ -7,6 +7,7 @@ import { deleteOrder, getAllOrders } from '@/lib/actions/order.actions';
 import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { requireAdmin } from '@/lib/auth-guard';
 
 export const metadata: Metadata = {
   title: 'Admin Orders',
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 const AdminOrdersPage = async (props: {
   searchParams: Promise<{ page: string; query: string }>;
 }) => {
+  await requireAdmin();
   const { page = '1', query: searchText } = await props.searchParams;
 
   const session = await auth();
