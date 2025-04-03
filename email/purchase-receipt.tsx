@@ -14,13 +14,61 @@ import {
 } from '@react-email/components';
 import { formatCurrency } from '@/lib/utils';
 import { Order } from '@/types';
+import sampleData from '@/db/sample-data';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config();
 
 const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' });
 
-export default function PurchaseReceiptEmail({ order }: { order: Order }) {
+PurchaseReceiptEmail.PreviewProps = {
+    order: {
+        id: crypto.randomUUID(),
+        userId: '123',
+        user: {
+            name: 'John Doe',
+            email: 'bS8Rn@example.com',
+        },
+        paymentMethod: 'Stripe',
+        shippingAddress: {
+            fullName: 'John Doe',
+            streetAddress: '123 Main St',
+            city: 'New York',
+            postalCode: '10001',
+            country: 'US',
+        },
+        createdAt: new Date(),
+        totalPrice: '100',
+        taxPrice: '10',
+        shippingPrice: '10',
+        itemsPrice: '80',
+        orderItems: sampleData.products.map((x) => ({
+            name: x.name,
+            orderId: '123',
+            productId: '123',
+            slug: x.slug,
+            qty: x.stock,
+            image: x.images[0],
+            price: x.price.toString(),
+        })),
+        isDelivered: true,
+        deliveredAt: new Date(),
+        isPaid: true,
+        paidAt: new Date(),
+        paymentResult: {
+            id: '123',
+            status: 'succeeded',
+            pricePaid: '12',
+            email_address: 'bS8Rn@example.com',
+        },
+    },
+} satisfies OrderInformationProps;
+
+type OrderInformationProps = {
+    order: Order;
+};
+
+export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
     return (
         <Html>
             <Preview>View order receipt</Preview>
